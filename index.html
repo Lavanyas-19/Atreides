@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GuardianX</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    body {
+      background: linear-gradient(-45deg, #1e1e1e, #2e2e2e, #1e1e1e);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    header {
+      background-color: #dad7d7;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    header h1 {
+      color: #0a0a0a;
+      font-size: 30px;
+      font-weight: 600;
+    }
+
+    header a {
+      text-decoration: none;
+      color: #0a0a0a;
+      font-weight: 1000;
+      font-size:25px;
+      transition: color 0.3s;
+    }
+
+    header a:hover {
+      color: #43414d;
+    }
+
+    .main {
+      display: flex;
+      height: calc(100vh - 80px);
+    }
+
+    .left-side {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+    }
+
+    .left-side img {
+      width: 90%;
+      max-width: 700px;
+      height: auto;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease;
+    }
+
+    .right-side {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      padding: 30px;
+    }
+
+    .login-button {
+      width: 90%;
+      padding: 60px;
+      font-size: 40px;
+      font-weight: 700;
+      text-align: center;
+      color: black;
+      background-color: #ccc;
+      border-radius: 20px;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(26, 15, 68, 0.3);
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .login-button:hover {
+      background-color: #080707;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      .login-button {
+        width: 100%;
+        padding: 50px;
+        font-size: 35px;
+      }
+    }
+
+    .settings-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+    }
+
+    .settings-icon img {
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .settings-icon img:hover {
+      transform: rotate(90deg);
+    }
+
+    @media (max-width: 768px) {
+      .main {
+        flex-direction: column;
+      }
+
+      .left-side,
+      .right-side {
+        width: 100%;
+        height: auto;
+        padding: 20px;
+      }
+
+      .left-side img {
+        width: 70%;
+      }
+
+      .login-button {
+        width: 100%;
+      }
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 400px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .login-form input,
+    .login-form button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .login-form button {
+      background-color: #000000;
+      color: white;
+      cursor: pointer;
+    }
+
+    .login-form button:hover {
+      background-color: #525154;
+    }
+
+    .login-form button:nth-of-type(2) {
+      background-color: #4d4c4c;
+    }
+
+    .login-form button:nth-of-type(2):hover {
+      background-color: #0b0b11;
+    }
+
+    .login-form button:nth-of-type(3) {
+      background-color: #7c7c7c;
+    }
+
+    .login-form button:nth-of-type(3):hover {
+      background-color: #292929;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1>GuardianX</h1>
+    <a href="#">Atreides</a>
+  </header>
+
+  <!-- Main Section -->
+  <div class="main">
+    <!-- Left Side (Image) -->
+    <div class="left-side">
+      <img src="C:\Users\Kavya\Desktop\Atreides\templates\Screenshot 2025-04-12 123431.png" alt="Guardian Suit Image" />
+    </div>
+
+    <!-- Right Side (Login Buttons) -->
+    <div class="right-side">
+      <a href="#" class="login-button" id="minerLoginButton">👷 Miner Login</a>
+      <a href="#" class="login-button" id="supervisorLoginButton">🛠️ Supervisor Login</a>
+    </div>
+  </div>
+
+  <!-- Settings Icon -->
+  <div class="settings-icon">
+    <a href="#">
+      <img src="images/settings-icon.png" alt="Settings Icon" />
+    </a>
+  </div>
+
+  <!-- Modal for Login -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h2>Login</h2>
+      <!-- Login Form -->
+      <div class="login-form">
+        <form id="loginForm">
+          <input type="text" id="username" placeholder="Username" required /><br>
+          <input type="password" id="password" placeholder="Password" required /><br>
+          <button type="submit">Login</button>
+          <button type="button" onclick="handleSignup()">Sign Up</button>
+          <button type="button" onclick="handleForgotPassword()">Forgot Password?</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var modal = document.getElementById("loginModal");
+    var closeModal = document.getElementById("closeModal");
+
+    var minerLoginButton = document.getElementById("minerLoginButton");
+    var supervisorLoginButton = document.getElementById("supervisorLoginButton");
+
+    minerLoginButton.onclick = function () {
+      modal.style.display = "block";
+    }
+
+    supervisorLoginButton.onclick = function () {
+      modal.style.display = "block";
+    }
+
+    closeModal.onclick = function () {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+    // Handle Sign Up
+    function handleSignup() {
+      alert("Redirecting to Sign Up...");
+    }
+
+    // Handle Forgot Password
+    function handleForgotPassword() {
+      alert("Please contact admin or check email for password reset.");
+    }
+
+    // Login validation
+    document.getElementById("loginForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      if (username === "miner" && password === "1234") {
+        alert("Login successful!");
+        modal.style.display = "none";
+      } else {
+        alert("Invalid credentials. Please try again.");
+      }
+    });
+  </script>
+
+</body>
+</html>
