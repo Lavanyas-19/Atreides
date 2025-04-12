@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GUARDIAN-X Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: black;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .navbar {
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffffff;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.5);
+    }
+
+    .navbar-title {
+      font-size: 24px;
+    }
+
+    .atreides {
+      font-size: 20px;
+      color: #00bfff;
+      font-weight: 600;
+    }
+
+    .dashboard {
+      margin-top: 120px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.4);
+      width: 800px;
+      animation: fadeIn 0.5s ease-in-out;
+      overflow-x: auto;
+      z-index: 100;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dashboard h1 {
+      margin-bottom: 30px;
+      font-size: 34px;
+      font-weight: 600;
+    }
+
+    .features {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      gap: 30px;
+    }
+
+    .feature-box {
+      background: white;
+      color: black;
+      width: 200px;
+      height: 180px;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      font-size: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .feature-box:hover {
+      transform: scale(1.05);
+      background: #eaeaea;
+    }
+
+    .feature-box a {
+      text-decoration: none;
+      color: inherit;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    /* Particle Animation */
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Particle Animation Canvas -->
+  <canvas id="particleCanvas"></canvas>
+
+  <div class="navbar">
+    <div class="navbar-title">GUARDIAN-X</div>
+    <div class="atreides">ATREIDES</div>
+  </div>
+
+  <div class="dashboard" id="dashboard">
+    <h1>Welcome, Miner!</h1>
+    <div class="features">
+      <div class="feature-box">
+        <a href="health.html">❤️<br>Health<br>Monitoring</a>
+      </div>
+      <div class="feature-box">
+        <a href="gps.html">📍<br>GPS<br>Monitor</a>
+      </div>
+      <div class="feature-box">
+        <a href="changedetails.html">⚙️<br>Change<br>Details</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Particle Animation Script
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    const particles = [];
+    const numParticles = 100;
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Array of colors
+    const colors = ['rgba(255, 215, 0, 0.8)', 'rgba(0, 191, 255, 0.8)', 'rgba(255, 105, 180, 0.8)', 'rgba(255, 255, 255, 0.8)'];
+
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = Math.random() * 5 + 2;
+        this.speedX = Math.random() * 5 - 2.5;  // Increased speed
+        this.speedY = Math.random() * 5 - 2.5;  // Increased speed
+        this.color = colors[Math.floor(Math.random() * colors.length)];  // Random color from the array
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.size > 0.2) this.size -= 0.1;
+      }
+
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+      }
+    }
+
+    function createParticles(e) {
+      const xPos = e.x;
+      const yPos = e.y;
+
+      for (let i = 0; i < numParticles; i++) {
+        particles.push(new Particle(xPos, yPos));
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+        if (particles[i].size <= 0.2) {
+          particles.splice(i, 1);
+          i--;
+        }
+      }
+
+      requestAnimationFrame(animateParticles);
+    }
+
+    // Event listener to track mouse movement
+    canvas.addEventListener('mousemove', createParticles);
+    animateParticles();
+  </script>
+
+</body>
+</html>
