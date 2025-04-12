@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUARDIAN-X Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('C:/Users/Kavya/Desktop/guardian_x/pngtree-mine-tunnel-at-night-in-san-miquel-image_2924946.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(234, 171, 23, 0.358);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.4);
+            width: 450px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-box {
+            width: 85%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #06134e;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .input-box input {
+            border: none;
+            outline: none;
+            flex: 1;
+        }
+
+        .login-btn {
+            padding: 12px 18px;
+            background: #e70404;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .login-btn:hover {
+            background: #058020;
+        }
+
+        .dashboard {
+            display: none;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.4);
+            width: 500px;
+        }
+
+        .dashboard h1 {
+            margin-bottom: 20px;
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .feature-box {
+            background: white;
+            color: black;
+            width: 120px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container" id="login-form">
+        <h1>Login</h1>
+        <div class="input-box"><span class="icon">👤</span><input type="text" id="username" placeholder="Username" required></div>
+        <div class="input-box"><span class="icon">🔒</span><input type="password" id="password" placeholder="Password" required></div>
+        <button class="login-btn" onclick="login()">Login</button>
+    </div>
+
+    <div class="dashboard" id="dashboard">
+        <h1>Welcome, Miner!</h1>
+        <div class="features">
+            <div class="feature-box">❤️<br>Health Monitoring</div>
+            <div class="feature-box">📍<br>GPS Tracker</div>
+            <div class="feature-box">⚙️<br>Change Details</div>
+        </div>
+    </div>
+
+    <script>
+        function login() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            
+            if (username === "miner" && password === "1234") {
+                document.getElementById("login-form").style.display = "none";
+                document.getElementById("dashboard").style.display = "block";
+            } else {
+                alert("Invalid credentials");
+            }
+        }
+    </script>
+</body>
+</html>

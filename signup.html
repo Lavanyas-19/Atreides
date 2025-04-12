@@ -1,0 +1,175 @@
+b               <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUARDIAN-X Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.4);
+            width: 450px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .login-card {
+            width: 180px;
+            height: 150px;
+            background: #ffffff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: black;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .login-card:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .login-form, .reset-form, .signup-form {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.4);
+            width: 400px;
+            margin-top: 20px;
+        }
+
+        .input-box {
+            width: 85%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #203a43;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .input-box input {
+            border: none;
+            outline: none;
+            flex: 1;
+        }
+
+        .icon {
+            font-size: 18px;
+            color: #203a43;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .login-btn {
+            padding: 12px 18px;
+            background: #203a43;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .login-btn:hover {
+            background: #2c5364;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="login-selection">
+        <h1>Login Type</h1>
+        <div class="login-options">
+            <div class="login-card" onclick="showMinerLogin()">Miner Login</div>
+            <div class="login-card">Supervisor Login</div>
+        </div>
+    </div>
+
+    <div class="login-form" id="miner-login-form">
+        <h1>Miner Login Form</h1>
+        <div class="input-box"><span class="icon">👤</span><input type="text" id="miner-username" placeholder="Username" required></div>
+        <div class="input-box"><span class="icon">🔒</span><input type="password" id="miner-password" placeholder="Password" required></div>
+        <div class="button-group">
+            <button class="login-btn" onclick="saveLogin()">Login</button>
+            <button class="login-btn" onclick="showLoginSelection()">Back</button>
+        </div>
+        <div>
+            <a href="#" onclick="showSignUp()">Sign Up</a> | 
+            <a href="#" onclick="showResetForm()">Forgot Password?</a>
+        </div>
+    </div>
+
+    <div class="signup-form" id="signup-form">
+        <h1>Create Account</h1>
+        <div class="input-box"><span class="icon">👤</span><input type="text" placeholder="Username" required></div>
+        <div class="input-box"><span class="icon">📍</span><input type="text" placeholder="Assigned Area" required></div>
+        <div class="input-box"><span class="icon">📟</span><input type="text" placeholder="RFID Number" required></div>
+        <div class="input-box"><span class="icon">📱</span><input type="text" placeholder="Mobile Number" required></div>
+        <div class="input-box"><span class="icon">🎂</span><input type="number" placeholder="Age" required></div>
+        <div class="input-box"><span class="icon">🔑</span><input type="password" placeholder="Password" required></div>
+        <div class="input-box"><span class="icon">🔑</span><input type="password" placeholder="Confirm Password" required></div>
+        <div class="button-group">
+            <button class="login-btn">Create Account</button>
+            <button class="login-btn" onclick="showMinerLogin()">Back</button>
+        </div>
+    </div>
+
+    <script>
+        function showSignUp() {
+            document.getElementById('login-selection').style.display = 'none';
+            document.getElementById('miner-login-form').style.display = 'none';
+            document.getElementById('signup-form').style.display = 'flex';
+        }
+        
+        function showMinerLogin() {
+            document.getElementById('login-selection').style.display = 'none';
+            document.getElementById('miner-login-form').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>

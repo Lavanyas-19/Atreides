@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUARDIAN-X Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('C:/Users/Kavya/Desktop/guardian_x/pngtree-mine-tunnel-at-night-in-san-miquel-image_2924946.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+        }
+
+        .container, .dashboard, .change-details {
+            text-align: center;
+            background: rgba(225, 181, 36, 0.358);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.4);
+            width: 450px;
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .container {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-box {
+            width: 85%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #06134e;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .input-box input {
+            border: none;
+            outline: none;
+            flex: 1;
+        }
+
+        .login-btn, .back-btn {
+            padding: 12px 18px;
+            background: #e70404;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover, .back-btn:hover {
+            background: #058020;
+        }
+
+        .dashboard h1 {
+            margin-bottom: 20px;
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .feature-box {
+            background: white;
+            color: black;
+            width: 120px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .change-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .change-option {
+            background: white;
+            color: black;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .change-option:hover {
+            background: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div class="container" id="login-form">
+        <h1>Login</h1>
+        <div class="input-box"><span class="icon">👤</span><input type="text" id="username" placeholder="Username" required></div>
+        <div class="input-box"><span class="icon">🔒</span><input type="password" id="password" placeholder="Password" required></div>
+        <button class="login-btn" onclick="login()">Login</button>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <h1>Welcome, Miner!</h1>
+        <div class="features">
+
+            <div class="feature-box" onclick="showChangeDetails()">⚙️<br>Change Details</div>
+        </div>
+        <button class="back-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Change Details Section -->
+    <div class="change-details" id="change-details">
+        <h1>Change Your Details</h1>
+        <div class="change-options">
+            <div class="change-option" onclick="showChangeForm('forgot-password')">🔑 Forgot Password</div>
+            <div class="change-option" onclick="showChangeForm('change-username')">👤 Change Username</div>
+            <div class="change-option" onclick="showChangeForm('change-rfid')">📟 Change RFID Number</div>
+            <div class="change-option" onclick="showChangeForm('change-employee-id')">🆔 Change Employee ID</div>
+            <div class="change-option" onclick="showChangeForm('change-mobile')">📱 Change Mobile Number</div>
+        </div>
+        <button class="back-btn" onclick="showDashboard()">Back</button>
+    </div>
+
+    <!-- Change Form -->
+    <div class="container" id="change-form" style="display: none;">
+        <h1 id="change-title">Change Details</h1>
+        <div class="input-box"><span class="icon">✏️</span><input type="text" id="new-value" placeholder="Enter new value" required></div>
+        <button class="login-btn" onclick="saveChanges()">Save Changes</button>
+        <button class="back-btn" onclick="showChangeDetails()">Back</button>
+    </div>
+
+    <script>
+        function login() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            
+            if (username === "miner" && password === "1234") {
+                document.getElementById("login-form").style.display = "none";
+                document.getElementById("dashboard").style.display = "block";
+            } else {
+                alert("Invalid credentials");
+            }
+        }
+
+        function logout() {
+            document.getElementById("dashboard").style.display = "none";
+            document.getElementById("login-form").style.display = "block";
+        }
+
+        function showChangeDetails() {
+            document.getElementById("dashboard").style.display = "none";
+            document.getElementById("change-details").style.display = "block";
+        }
+
+        function showDashboard() {
+            document.getElementById("change-details").style.display = "none";
+            document.getElementById("change-form").style.display = "none";
+            document.getElementById("dashboard").style.display = "block";
+        }
+
+        function showChangeForm(type) {
+            document.getElementById("change-details").style.display = "none";
+            document.getElementById("change-form").style.display = "block";
+
+            let titleMap = {
+                "forgot-password": "Reset Password",
+                "change-username": "Change Username",
+                "change-rfid": "Change RFID Number",
+                "change-employee-id": "Change Employee ID",
+                "change-mobile": "Change Mobile Number"
+            };
+
+            document.getElementById("change-title").innerText = titleMap[type];
+        }
+
+        function saveChanges() {
+            let newValue = document.getElementById("new-value").value;
+            if (newValue === "") {
+                alert("Please enter a new value!");
+            } else {
+                alert("Details updated successfully!");
+                showChangeDetails();
+            }
+        }
+    </script>
+</body>
+</html>
