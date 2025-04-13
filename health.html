@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Live Health Data</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: rgb(28, 27, 27);
+      color: white;
+      overflow: hidden;
+    }
+
+    .navbar {
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 18px;
+      font-weight: bold;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.5);
+    }
+
+    .navbar-title {
+      font-size: 24px;
+    }
+
+    .atreides {
+      font-size: 20px;
+      color: #00bfff;
+      font-weight: 600;
+    }
+    .container {
+  position: relative;
+  z-index: 1;
+  margin-top: 120px;
+  padding: 30px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 20px;
+  width: 90%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.4);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  text-align: left;
+}
+
+.data-block {
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+}
+
+canvas#sensorChart {
+  background-color: white;
+  border-radius: 12px;
+  padding: 15px;
+  max-width: 100%;
+  height: auto;
+}
+
+
+    p {
+      font-size: 18px;
+      margin: 8px 0;
+    }
+
+    canvas#particleCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Particle Background -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="navbar-title">GUARDIAN-X</div>
+    <div class="atreides">ATREIDES</div>
+  </div>
+
+  <!-- Content -->
+  <div class="container">
+    <div class="data-block">
+      <h1>Live Health Data Monitoring</h1>
+      <br>
+      <h2>Worker Data</h2>
+      <p><strong>Worker ID:</strong> <span id="workerID">worker_1234</span></p>
+      <p><strong>Temperature:</strong> <span id="temperature">Loading...</span> °C</p>
+      <p><strong>MQ4 (CH₄):</strong> <span id="mq4">Loading...</span></p>
+      <p><strong>MQ7 (CO):</strong> <span id="mq7">Loading...</span></p>
+      <p><strong>MQ135 (Air/H₂S):</strong> <span id="mq135">Loading...</span></p>
+      <p><strong>Pulse Rate:</strong> <span id="pulse">Loading...</span> bpm</p>
+      <p><strong>Fall Detected:</strong> <span id="fallDetected">Loading...</span></p>
+      <p><strong>Auto Alert:</strong> <span id="autoAlert">Loading...</span></p>
+    </div>
+    <canvas id="sensorChart"></canvas>
+  </div>
+  
+
+  <!-- Chart and Sensor Simulation -->
+  <script>
+    const ctx = document.getElementById('sensorChart').getContext('2d');
+
+    const chartData = {
+      labels: ['Temp (°C)', 'MQ4 (CH₄)', 'MQ7 (CO)', 'MQ135 (Air/H₂S)', 'Pulse (bpm)'],
+      datasets: [{
+        label: 'Sensor Data',
+        data: [0, 0, 0, 0, 0],
+        borderColor: 'rgba(0, 191, 255, 1)',
+        backgroundColor: 'rgba(0, 191, 255, 0.2)',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.3,
+        pointRadius: 4
+      }]
+    };
+
+    const config = {
+      type: 'line',
+      data: chartData,
+      options: {
+        scales: {
+          y: { beginAtZero: true }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top'
+          }
+        }
+      }
+    };
+
+    const myChart = new Chart(ctx, config);
+
+    function simulateData() {
+      const newTemp = (Math.random() * (40 - 25) + 25).toFixed(2);
+      const newMQ4 = (Math.random() * (250 - 200) + 200).toFixed(2);
+      const newMQ7 = (Math.random() * (200 - 150) + 150).toFixed(2);
+      const newMQ135 = (Math.random() * (350 - 300) + 300).toFixed(2);
+      const newPulse = (Math.random() * (75 - 70) + 70).toFixed(0);
+      const fall = Math.random() > 0.85 ? 'Yes' : 'No';
+      const alert = Math.random() > 0.9 ? 'Enabled' : 'Disabled';
+
+      document.getElementById('temperature').innerText = newTemp;
+      document.getElementById('mq4').innerText = newMQ4;
+      document.getElementById('mq7').innerText = newMQ7;
+      document.getElementById('mq135').innerText = newMQ135;
+      document.getElementById('pulse').innerText = newPulse;
+      document.getElementById('fallDetected').innerText = fall;
+      document.getElementById('autoAlert').innerText = alert;
+
+      myChart.data.datasets[0].data = [
+        parseFloat(newTemp),
+        parseFloat(newMQ4),
+        parseFloat(newMQ7),
+        parseFloat(newMQ135),
+        parseFloat(newPulse)
+      ];
+      myChart.update();
+    }
+
+    simulateData();
+    setInterval(simulateData, 5000);
+  </script>
+
+  <!-- Particle Animation Script -->
+  <script>
+    const canvas = document.getElementById('particleCanvas');
+    const ctx2 = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let mouse = {
+      x: null,
+      y: null,
+      radius: 150
+    };
+
+    window.addEventListener('mousemove', function (event) {
+      mouse.x = event.x;
+      mouse.y = event.y;
+    });
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.speedY = Math.random() * 1 - 0.5;
+      }
+
+      update() {
+        if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+        if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+        this.x += this.speedX;
+        this.y += this.speedY;
+      }
+
+      draw() {
+        ctx2.fillStyle = 'rgba(0, 191, 255, 0.8)';
+        ctx2.beginPath();
+        ctx2.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx2.fill();
+      }
+    }
+
+    const particles = [];
+    for (let i = 0; i < 150; i++) {
+      particles.push(new Particle());
+    }
+
+    function connectParticles() {
+      for (let a = 0; a < particles.length; a++) {
+        for (let b = a + 1; b < particles.length; b++) {
+          let dx = particles[a].x - particles[b].x;
+          let dy = particles[a].y - particles[b].y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < 120) {
+            ctx2.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx2.lineWidth = 1;
+            ctx2.beginPath();
+            ctx2.moveTo(particles[a].x, particles[a].y);
+            ctx2.lineTo(particles[b].x, particles[b].y);
+            ctx2.stroke();
+          }
+        }
+      }
+    }
+
+    function animateParticles() {
+      ctx2.clearRect(0, 0, canvas.width, canvas.height);
+      for (let particle of particles) {
+        particle.update();
+        particle.draw();
+        let dx = mouse.x - particle.x;
+        let dy = mouse.y - particle.y;
+        let dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < mouse.radius) {
+          ctx2.beginPath();
+          ctx2.moveTo(particle.x, particle.y);
+          ctx2.lineTo(mouse.x, mouse.y);
+          ctx2.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+          ctx2.stroke();
+        }
+      }
+      connectParticles();
+      requestAnimationFrame(animateParticles);
+    }
+
+    animateParticles();
+
+    window.addEventListener('resize', function () {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
