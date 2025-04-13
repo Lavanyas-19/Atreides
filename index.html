@@ -18,11 +18,21 @@
       100% { background-position: 0% 50%; }
     }
 
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
     body {
       background: linear-gradient(-45deg, #1e1e1e, #2e2e2e, #1e1e1e);
       background-size: 400% 400%;
+      background-position: 0% 50%;
       animation: gradientShift 15s ease infinite;
       font-family: 'Poppins', sans-serif;
+      overflow: hidden;
     }
 
     header {
@@ -32,6 +42,8 @@
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      position: relative;
+      z-index: 1;
     }
 
     header h1 {
@@ -44,7 +56,7 @@
       text-decoration: none;
       color: #0a0a0a;
       font-weight: 1000;
-      font-size:25px;
+      font-size: 25px;
       transition: color 0.3s;
     }
 
@@ -55,6 +67,8 @@
     .main {
       display: flex;
       height: calc(100vh - 80px);
+      position: relative;
+      z-index: 1;
     }
 
     .left-side {
@@ -110,26 +124,7 @@
         padding: 50px;
         font-size: 35px;
       }
-    }
 
-    .settings-icon {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-    }
-
-    .settings-icon img {
-      width: 40px;
-      height: 40px;
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
-
-    .settings-icon img:hover {
-      transform: rotate(90deg);
-    }
-
-    @media (max-width: 768px) {
       .main {
         flex-direction: column;
       }
@@ -144,17 +139,30 @@
       .left-side img {
         width: 70%;
       }
-
-      .login-button {
-        width: 100%;
-      }
     }
 
-    /* Modal styles */
+    .settings-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 2;
+    }
+
+    .settings-icon img {
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .settings-icon img:hover {
+      transform: rotate(90deg);
+    }
+
     .modal {
       display: none;
       position: fixed;
-      z-index: 1;
+      z-index: 3;
       left: 0;
       top: 0;
       width: 100%;
@@ -185,7 +193,6 @@
     .close:focus {
       color: black;
       text-decoration: none;
-      cursor: pointer;
     }
 
     .login-form input,
@@ -216,57 +223,58 @@
       background-color: #0b0b11;
     }
 
-    .login-form button:nth-of-type(3) {
-      background-color: #7c7c7c;
+    .forgot-password-link {
+      display: block;
+      margin-top: 8px;
+      text-align: center; /* Center align */
+      font-size: 14px;
+      color: #007bff;
+      text-decoration: none;
+      cursor: pointer;
     }
 
-    .login-form button:nth-of-type(3):hover {
-      background-color: #292929;
+    .forgot-password-link:hover {
+      text-decoration: underline;
+      color: #0056b3;
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
+  <canvas id="particleCanvas"></canvas>
+
   <header>
     <h1>GuardianX</h1>
     <a href="#">Atreides</a>
   </header>
 
-  <!-- Main Section -->
   <div class="main">
-    <!-- Left Side (Image) -->
     <div class="left-side">
       <img src="C:\Users\Kavya\Desktop\Atreides\templates\Screenshot 2025-04-12 123431.png" alt="Guardian Suit Image" />
     </div>
-
-    <!-- Right Side (Login Buttons) -->
     <div class="right-side">
       <a href="#" class="login-button" id="minerLoginButton">👷 Miner Login</a>
       <a href="#" class="login-button" id="supervisorLoginButton">🛠️ Supervisor Login</a>
     </div>
   </div>
 
-  <!-- Settings Icon -->
   <div class="settings-icon">
     <a href="#">
       <img src="images/settings-icon.png" alt="Settings Icon" />
     </a>
   </div>
 
-  <!-- Modal for Login -->
   <div id="loginModal" class="modal">
     <div class="modal-content">
       <span class="close" id="closeModal">&times;</span>
       <h2>Login</h2>
-      <!-- Login Form -->
       <div class="login-form">
         <form id="loginForm">
           <input type="text" id="username" placeholder="Username" required /><br>
           <input type="password" id="password" placeholder="Password" required /><br>
           <button type="submit">Login</button>
           <button type="button" onclick="handleSignup()">Sign Up</button>
-          <button type="button" onclick="handleForgotPassword()">Forgot Password?</button>
+          <a href="fp.html" class="forgot-password-link">Forgot Password?</a>
         </form>
       </div>
     </div>
@@ -275,7 +283,6 @@
   <script>
     var modal = document.getElementById("loginModal");
     var closeModal = document.getElementById("closeModal");
-
     var minerLoginButton = document.getElementById("minerLoginButton");
     var supervisorLoginButton = document.getElementById("supervisorLoginButton");
 
@@ -297,17 +304,10 @@
       }
     }
 
-    // Handle Sign Up
     function handleSignup() {
-      alert("Redirecting to Sign Up...");
+      window.location.href = "ca.html";
     }
 
-    // Handle Forgot Password
-    function handleForgotPassword() {
-      alert("Please contact admin or check email for password reset.");
-    }
-
-    // Login validation
     document.getElementById("loginForm").addEventListener("submit", function (event) {
       event.preventDefault();
       const username = document.getElementById("username").value;
@@ -316,10 +316,115 @@
       if (username === "miner" && password === "1234") {
         alert("Login successful!");
         modal.style.display = "none";
+        window.location.href = "login.html";
+      } else if (username === "supervisor" && password === "4321") {
+        alert("Login successful!");
+        modal.style.display = "none";
+        window.location.href = "slogin.html";
       } else {
         alert("Invalid credentials. Please try again.");
       }
     });
+
+    // Particle Background Animation
+    const canvas = document.getElementById("particleCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let particles = [];
+    const particleCount = 100;
+    const maxDistance = 120;
+    const mouse = { x: null, y: null };
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.speedX = (Math.random() - 0.5) * 1.5;
+        this.speedY = (Math.random() - 0.5) * 1.5;
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function connectParticles() {
+      for (let a = 0; a < particles.length; a++) {
+        for (let b = a + 1; b < particles.length; b++) {
+          let dx = particles[a].x - particles[b].x;
+          let dy = particles[a].y - particles[b].y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < maxDistance) {
+            ctx.strokeStyle = "rgba(255, 255, 255," + (1 - distance / maxDistance) + ")";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(particles[b].x, particles[b].y);
+            ctx.stroke();
+          }
+        }
+
+        if (mouse.x && mouse.y) {
+          let dx = particles[a].x - mouse.x;
+          let dy = particles[a].y - mouse.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < maxDistance) {
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+            ctx.beginPath();
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p) => {
+        p.update();
+        p.draw();
+      });
+      connectParticles();
+      requestAnimationFrame(animateParticles);
+    }
+
+    initParticles();
+    animateParticles();
   </script>
 
 </body>
