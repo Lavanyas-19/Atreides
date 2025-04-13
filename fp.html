@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Forgot Password - GuardianX</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at 20% 30%, #1c1c1c, #121212);
+      color: #fff;
+      overflow: hidden;
+    }
+
+    header {
+      background-color: #0d0d0d;
+      padding: 16px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+    }
+
+    .header-title {
+      color: #fff;
+    }
+
+    /* Particle background */
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: calc(100vh - 80px);
+      padding: 20px;
+    }
+
+    .form-card {
+      background-color: #1f1f1f;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+      max-width: 480px;
+      width: 100%;
+    }
+
+    .form-card h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 24px;
+    }
+
+    label {
+      font-size: 14px;
+      margin-bottom: 6px;
+      display: block;
+      color: #ccc;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #2a2a2a;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    input:focus {
+      outline: none;
+      border: 1px solid #555;
+    }
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .top-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .top-buttons button {
+      flex: 1;
+    }
+
+    .center-cancel {
+      text-align: center;
+    }
+
+    .center-cancel button {
+      padding: 12px 32px;
+    }
+
+    .button-group button {
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      background-color: #2e2e2e;
+      color: #fff;
+      transition: background 0.3s ease;
+    }
+
+    .button-group button:hover {
+      background-color: #3a3a3a;
+    }
+
+    .cancel-btn {
+      color: #ff5c5c;
+    }
+
+    @media (max-width: 480px) {
+      .top-buttons {
+        flex-direction: column;
+      }
+
+      .center-cancel button {
+        width: 100%;
+      }
+    }
+
+    /* Particle background animation */
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="header-title">🔐 GuardianX - Forgot Password</span>
+  </header>
+
+  <!-- Particle Background -->
+  <canvas id="particleCanvas"></canvas>
+
+  <div class="container">
+    <div class="form-card">
+      <h2>Forgot Password</h2>
+      <form id="forgotPasswordForm">
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" name="fullname" required>
+
+        <label for="empid">Employee ID</label>
+        <input type="text" id="empid" name="empid" required>
+
+        <label for="rfid">RFID Tag Number</label>
+        <input type="text" id="rfid" name="rfid" required>
+
+        <label for="shift">Shift Time</label>
+        <input type="text" id="shift" name="shift" required>
+
+        <label for="supervisor">Supervisor Name</label>
+        <input type="text" id="supervisor" name="supervisor" required>
+
+        <div class="button-group">
+          <div class="top-buttons">
+            <button type="submit" class="submit-btn">✅ Submit Request</button>
+            <button type="button" class="reset-btn" onclick="resetForm()">🔄 Reset Form</button>
+          </div>
+          <div class="center-cancel">
+            <button type="button" class="cancel-btn" onclick="window.location.href='index.html'">❌ Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function resetForm() {
+      document.getElementById("forgotPasswordForm").reset();
+    }
+
+    document.getElementById("forgotPasswordForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      alert("Password reset request submitted. You will receive an update shortly.");
+      window.location.href = "index.html";
+    });
+
+    // Particle Background Animation
+    const canvas = document.getElementById("particleCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let particles = [];
+    const particleCount = 100;
+    const maxDistance = 120;
+    const mouse = { x: null, y: null };
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.speedX = (Math.random() - 0.5) * 1;
+        this.speedY = (Math.random() - 0.5) * 1;
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const maxDistance = 100;
+
+        if (distance < maxDistance) {
+          const forceDirectionX = dx / distance;
+          const forceDirectionY = dy / distance;
+
+          const force = (maxDistance - distance) / maxDistance;
+          this.speedX += forceDirectionX * force;
+          this.speedY += forceDirectionY * force;
+        }
+      }
+
+      draw() {
+        ctx.fillStyle = "white";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function connectParticles() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < maxDistance) {
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      connectParticles();
+      requestAnimationFrame(animate);
+    }
+
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    initParticles();
+    animate();
+  </script>
+
+</body>
+</html>
